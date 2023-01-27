@@ -1,16 +1,22 @@
 import streamlit as st
 import pandas as pd
 
+# Run the clean_data.py script
+exec(open('.\clean_data.py').read())
+
 # Load the data
-data_climify = pd.read_excel('data_climify.xlsx')
-data_skylab = pd.read_excel('data_skylab.xlsx')
+data_climify = pd.read_excel('.\cleandata\data_climify.xlsx')
+data_skylab = pd.read_excel('.\cleandata\data_skylab.xlsx')
 
-
+# center the app
+st.markdown("""<style>div.Widget.row-widget.stRadio > div:nth-child(2) > div > label:nth-child(1) {background-color: #FF0000;}</style>""", unsafe_allow_html=True)
 # Define all attributes contained in the columns locationid from the data
 locationid = data_climify['locationid'].unique()
 
+# Insert a picture centered in the app
+st.image('.\pic\logo.png', width=(500))
 # Create the Streamlit app
-st.title('Room Occupancy Dashboard')
+st.title('Skylab rooms occupancy dashboard')
 
 # Display a subtitle and a selectbox for the locationid
 locationid_selected = st.selectbox('Location', locationid)
@@ -46,23 +52,31 @@ st.subheader('Occupancy data for the chosen date and time')
 
 # Conditionally display the filtered data on the occupancy_pred column from the climify data and occupancy column from the skylab data
 if filtered_data_climify['occupancy_pred'].values[0] == 1 and filtered_data_skylab['occupancy'].values[0] == 1: 
-    st.write('The room is occupied')
+    # Display the text 'The room is booked and occupied' in red font color
+    st.markdown('<p style="color:red;">The room is booked and occupied</p>', unsafe_allow_html=True)
     # Display the background color of the streamlit app to red
     st.markdown("""<style>body {background-color: #FF0000;}</style>""", unsafe_allow_html=True)
     # Display a rectangle with the color red
     st.markdown("""<style>div.Widget.row-widget.stRadio > div:nth-child(2) > div > label:nth-child(1) {background-color: #FF0000;}</style>""", unsafe_allow_html=True)
+    # insert gif
+    st.image('.\pic\no.gif', width=(500))
 elif filtered_data_climify['occupancy_pred'].values[0] == 0 and filtered_data_skylab['occupancy'].values[0] == 0:
-    st.write('The room is not occupied')
+    # Display the text 'The room is available' in green font color
+    st.markdown('<p style="color:green;">The room is available</p>', unsafe_allow_html=True)
     # Display the background color of the streamlit app to green
     st.markdown("""<style>body {background-color: #00FF00;}</style>""", unsafe_allow_html=True)
     # Display a rectangle with the color green
     st.markdown("""<style>div.Widget.row-widget.stRadio > div:nth-child(2) > div > label:nth-child(2) {background-color: #00FF00;}</style>""", unsafe_allow_html=True)
+    # insert gif
+    st.image('.\pic\yes.gif', width=(500))
 elif filtered_data_climify['occupancy_pred'].values[0] == 1 and filtered_data_skylab['occupancy'].values[0] == 0:
     st.write('The room is not booked but occupied')
     # Display the background color of the streamlit app to yellow
     st.markdown("""<style>body {background-color: #FFFF00;}</style>""", unsafe_allow_html=True)
     # Display a rectangle with the color orange
     st.markdown("""<style>div.Widget.row-widget.stRadio > div:nth-child(2) > div > label:nth-child(3) {background-color: #FFFF00;}</style>""", unsafe_allow_html=True)
+    # insert gif
+    st.image('.\pic\no.gif', width=(500))
 elif filtered_data_climify['occupancy_pred'].values[0] == 0 and filtered_data_skylab['occupancy'].values[0] == 1:
     # Display the text 'The room is booked but not occupied' in orange font color
     st.markdown('<p style="color:orange;">The room is booked but not occupied</p>', unsafe_allow_html=True)
@@ -70,3 +84,5 @@ elif filtered_data_climify['occupancy_pred'].values[0] == 0 and filtered_data_sk
     st.markdown("""<style>body {background-color: #FFFF00;}</style>""", unsafe_allow_html=True)
     # Display a rectangle with the color orange
     st.markdown("""<style>div.Widget.row-widget.stRadio > div:nth-child(2) > div > label:nth-child(3) {background-color: #FFFF00;}</style>""", unsafe_allow_html=True)
+    # insert gif
+    st.image('.\pic\yes.gif', width=(500))
