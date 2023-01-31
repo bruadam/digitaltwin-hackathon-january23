@@ -29,6 +29,9 @@ X_test = scaler.transform(X_test)
 # Create the model
 model = tf.keras.Sequential()
 
+# Compile the model
+model.compile(loss='binary_crossentropy', optimizer='adam')
+
 # Train the model
 model.fit(x=X_train, y=y_train, epochs=600, validation_data=(X_test, y_test), verbose=1)
 
